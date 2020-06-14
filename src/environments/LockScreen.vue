@@ -52,9 +52,11 @@ function initSwiper () {
 
   useElement(swiper)
     .on('mousedown', () => {
+      // @ts-ignore
       swiper.value.addEventListener('mousemove', onMouseMove)
     })
     .on('mouseup', () => {
+      // @ts-ignore
       swiper.value.removeEventListener('mousemove', onMouseMove)
       if (swipePosition.value > swipeLimit) {
         console.log('unlock')
