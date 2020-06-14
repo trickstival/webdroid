@@ -9,8 +9,8 @@
     <top-info class="top-info absolute-top" />
     <div
       :style="{
-        transform: `scale(${1 - swipePosition / 100})`,
-        opacity: 1 - swipePosition * 3 / 100
+        transform: `scale(${1 - swipePosition * .5 / 100})`,
+        opacity: 1 - swipePosition * 2 / 100
       }"
       :class="{ 'transformed-back': swipePosition === 0 }"
       class="full-width transformed"
@@ -39,9 +39,14 @@ function initSwiper () {
   const swiper = ref(null)
   const swipePosition = ref(0)
   const swipeLimit = 100
+  const maxY = 100
+  const minY = 0
+  let lastY = 0
 
-  function onMouseMove () {
-    swipePosition.value += 1
+  function onMouseMove (e: MouseEvent) {
+    const nextValue = swipePosition.value + lastY - e.pageY
+    swipePosition.value = Math.min(maxY, Math.max(minY, nextValue))
+    lastY = e.pageY
     console.log('yo', swipePosition.value)
   }
 
@@ -55,6 +60,7 @@ function initSwiper () {
         console.log('unlock')
       }
       swipePosition.value = 0
+      lastY = 0
     })
 
   return {
